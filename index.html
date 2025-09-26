@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freshers Party Dare Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@600&family=Playfair+Display&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-pink: #ff69b4;
+      --primary-cyan: #00ffff;
+      --primary-purple: #9c27b0;
+      --primary-gold: #ffd700;
+      --text-glow: 0 0 10px currentColor, 0 0 20px currentColor;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      text-align: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+      opacity: 0.2;
+      z-index: -1;
+    }
+
+    .event-details {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(8px);
+      margin-top: 10px;
+      max-width: 95%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .event-details h2 {
+      font-size: 6.8rem;
+      font-family: 'Great Vibes', cursive;
+      color: var(--primary-gold);
+      text-shadow: var(--text-glow);
+    }
+
+    .event-details p {
+      font-size: 1.2rem;
+      font-family: 'Cinzel', serif;
+      color: var(--primary-cyan);
+      text-shadow: 0 0 8px var(--primary-cyan);
+    }
+
+    h1 {
+      font-size: 5rem;
+      font-family: 'Great Vibes', cursive;
+      color: var(--primary-pink);
+      text-shadow: var(--text-glow);
+      margin: 25px 0 15px;
+    }
+
+    .dare-box {
+      font-size: 3.6rem;
+      color: #fff;
+      text-shadow: 0 0 100px #fff, 0 0 200px var(--primary-pink);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px var(--primary-cyan);
+      display: inline-block;
+      min-width: 50%;
+      margin-top: 10px;
+    }
+
+    .roll-number {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 6.3rem;
+      color: var(--primary-cyan);
+      text-shadow: 0 0 8px var(--primary-cyan);
+    }
+
+    .gender-buttons {
+      margin-top: 20px;
+      display: none;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .gender-btn, .get-dare-btn {
+      background: linear-gradient(135deg, var(--primary-purple), var(--primary-cyan));
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px var(--primary-purple), 0 0 40px var(--primary-cyan);
+      transition: 0.3s;
+      margin: 5px;
+    }
+
+    .get-dare-btn {
+      background: linear-gradient(135deg, var(--primary-pink), var(--primary-gold));
+      margin-top: 20px;
+      box-shadow: 0 0 25px var(--primary-pink), 0 0 45px var(--primary-gold);
+    }
+
+    .gender-btn:hover, .get-dare-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px var(--primary-purple), 0 0 50px var(--primary-cyan);
+    }
+
+    
+    .footer {
+      margin-top: 30px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      opacity: 0.8;
+      top: -10px;
+      animation: fall 3s linear forwards;
+      border-radius: 50%;
+      z-index: 100;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Event Info -->
+  <div class="event-details">
+    <h2>🎉 Fresher's Party 2K25 🎉</h2>
+    <p><strong>Date:</strong> 27 Sep 2025 | </p>
+    <p><strong>Venue:</strong> YNS Auditorium</p>
+    <p><em>Special welcome to AIML,CAI & CDS Department Freshers 💜</em></p>
+  </div>
+
+  <!-- Dare Game -->
+  <h1>🎯 Dare Challenge 🎯</h1>
+  <div class="dare-box" id="dareText">Click the button below to get a dare!</div>
+  <div class="roll-number" id="rollNumber"></div>
+
+  <div class="gender-buttons" id="genderButtons">
+    <button class="gender-btn" onclick="showDare('male')"><i class="fas fa-mars"></i> Male Dare</button>
+    <button class="gender-btn" onclick="showDare('female')"><i class="fas fa-venus"></i> Female Dare</button>
+  </div>
+  <button class="get-dare-btn" onclick="generateRoll()"><i class="fas fa-dice"></i> Get Dare</button>
+
+  <div class="footer">Made with ❤️ for Freshers Party 2025</div>
+
+  <script>
+    // ✅ Proper arrays to prevent JS error
+    const maleDares = [
+      "Do 15 push-ups 💪",
+ "Make everyone laugh with your  dance 😂",
+ "Make a villain laugh  😈",
+  "Pretend to be a goat eating an imaginary book 🐐📖",
+ "Act like a ghost scared of its own shadow 👻",
+"Dance using only your hands 💃",
+"Dance to the song 'Mounica' with out song 🎶",
+  "Say this 3 times fast: 'How can a clam cram in a clean cream can?' 🦪",
+  "Pretend to be a politician asking for votes 🗳️",
+"Dance without music for  a minute 💃",
+ "Act like a ghost scared of its own shadow 👻",
+"Hop on one leg while singing your favorite song 🎶🦵",
+"Pretend to be a motivational speaker for 2 minutes 🎤",
+"Walk like a fashion model with a funny pose 👔",
+  "Hop like a frog across the stage 🐸",
+ "Give a funny commentary about someone's outfit 👗",
+ "Hop like a kangaroo and wave to the audience 🦘👋",
+  "Pretend to propose to a random object ❤️",
+  "Act like a cricket player celebrating a six with over-the-top moves 🏏",
+"Act like a chicken laying invisible eggs 🐔🥚",
+ "Try to touch your nose with your tongue 👅",
+"Make everyone laugh with your silliest joke 🤣",
+  "Imitate a famous politician singing a song 🎤",
+"Imitate a monkey eating invisible bananas 🍌",
+ "Pretend to be a YouTuber vlogging live 🎥",
+"Go to a senior and ask them to sing a song with you on stage 🎤🎶",
+"Act and express a line without speaking, while others guess the line 🤐",
+"Go to a senior and try to sell them an imaginary product 💸",
+"Go to a random senior and ask them for some money in a dramatic way 💰",
+"Convince a senior to dance with you on stage 💃🕺",
+"Act like you are drinking alcohol 🍺",
+"Say this 3 times: 'Fresh fried fish, fish fresh fried, fried fish fresh' 🍤",
+  "Pretend to be a shopkeeper selling samosas 🥟",
+    "Speak like a cricket commentator describing random people's actions 🎙️",
+"Go to a random senior and ask them to give you a dare to perform on stage 🎯",
+ "Spin 15 times and try to walk straight 🔄",
+    ];
+    const femaleDares = [
+      "Speak in a funny accent for 30 minutes 🎭",
+           "Sing the 'Happy Birthday' song 🎶",
+      "Act like your favorite teacher for 1 minute 👨‍🏫",
+      "Say this 3 times: 'Betty Botter bought some butter, but the butter was bitter' 🧈",
+      "Speak only in rhymes for 3 minutes 🎤",
+"Go to a senior and try to sell them an imaginary product 💸",
+      "Act like a cat and meow for 1 minute 🐱",
+"Explain how to do something simple in a very complicated way 🤯",
+"Apply makeup and showcase your look on stage 💄",
+      "Sing any song 🎶",
+"Act and express a line without speaking, while others guess the line 🤐",
+  "Walk backward while singing a funny song 🎶",
+      "Dance without music for 1 minute 💃",
+      "Imitate a celebrity until someone guesses correctly 🎬",
+      "Hold a funny pose for 30 seconds 🧘‍♂️",
+      "Make everyone laugh with your funniest joke 🤣",
+"Go to a senior and ask them to sing a song with you on stage 🎤🎶",
+      "Sit down and stand up 10 times without using your hands 🪑",
+      "Draw a star in the air using your nose ⭐",
+          "Do a funny catwalk across the room 👠",
+      "Say this 3 times: 'Fresh fried fish, fish fresh fried, fried fish fresh' 🍤",
+      "Act like you are drinking invisible tea and compliment its taste ☕",
+      "Pretend to be invisible and sneak around 🕵️‍♂️",
+  "Pretend to be a politician asking for votes 🗳️",
+      "Act like you just won the lottery 🤑",
+  "Act like a baby learning to walk 👶",
+"Dance using only your hands 💃",
+"Dance to the song 'Mounika' with out music 🎶",
+      "Say this 3 times: 'I saw a kitten eating chicken in the kitchen' 🐱🍗",
+      "Act like a zombie and roam around 🧟‍♂️",
+ "Try to sing but only using the word ‘meow’ 🐱",
+      "Act like you're on a cooking show and explain a fake recipe 👨‍🍳",
+ "Pretend you are a YouTube chef explaining how to make Maggi 🍜",
+      "Pretend to be a motivational speaker for 2 minutes 🎤",
+  "Throw an imaginary ball and act like you just hit a six 🏏",
+      "Do a random trending dance you know 💃",
+ "Keep your tongue out and try to say your full name 👅",
+"Act like a crying baby asking for candy 👶🍭",
+      "Pretend to be a shopkeeper selling samosas very seriously 🥟",
+      "Hold a funny pose for 30 seconds and spin around 🧘‍♂️",
+      "Try to balance a pen on your nose for 30 seconds 🖊️",
+      "Laugh like a villain for 30 seconds 😈",
+    "Draw a circle with one hand and a square with the other at the same time 🔄⬜",
+      "Pretend you are late to class and beg for attendance 🏃‍♂️",
+      "Pretend to be a YouTuber vlogging this party 🎥",
+  "Try to say the alphabet backward ",
+  "Act like a baby discovering ice cream for the first time 👶🍦",
+      "Spin 15 times quickly and try to walk straight 🔄",
+    ];
+
+    let countdown;
+    let timeLeft = 30;
+
+    function generateRoll() {
+      const roll = Math.floor(Math.random() * 60) + 1;
+   
+      document.getElementById("dareText").textContent = "Select your gender to reveal the dare!";
+      document.getElementById("genderButtons").style.display = "flex";
+      document.getElementById("timer").style.display = "none";
+      resetTimer();
+      launchConfetti();
+    }
+
+    function showDare(gender) {
+      const dareArray = gender === "male" ? maleDares : femaleDares;
+      const randomDare = dareArray[Math.floor(Math.random() * dareArray.length)];
+      document.getElementById("dareText").textContent = randomDare;
+      document.getElementById("genderButtons").style.display = "none";
+      startTimer();
+    }
+
+   
+
+    function launchConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+  </script>
+</body>
+</html>
